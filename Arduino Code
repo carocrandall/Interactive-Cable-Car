@@ -1,0 +1,31 @@
+int firstSensor = 0;    // first analog sensor
+int secondSensor = 0;   // second analog sensor
+//int thirdSensor = 0;    // digital sensor
+
+void setup() {
+  // start serial `port at 9600 bps and wait for port to open:
+  Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+  pinMode(2, INPUT);   // digital sensor is on digital pin 2
+}
+
+void loop() {
+  // if we get a valid byte, read analog ins:
+  
+ 
+    firstSensor = analogRead(A0);
+    secondSensor = analogRead(A1);
+   // thirdSensor = analogRead(A2);
+ 
+    Serial.print(firstSensor);
+    Serial.print(",");
+    Serial.print(secondSensor);
+   // Serial.print(",");
+    //Serial.print(thirdSensor);
+    Serial.print('\n');
+  
+}
+
+
