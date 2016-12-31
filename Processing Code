@@ -1,0 +1,273 @@
+import processing.serial.*;     
+Serial myPort; 
+float accel1;
+float accel2;  
+
+import processing.sound.*;
+SoundFile ring;
+
+import processing.video.*;
+Movie myMovie;
+
+PFont font;
+
+PImage gears;
+PImage hill;
+PImage easy;
+PImage newrider;
+PImage done;
+int startTime;
+
+
+void setup() {
+  //size(1440, 900);
+ fullScreen();
+  myMovie = new Movie(this, "youtubecc.mp4"); 
+
+  ring = new SoundFile(this, "bell ring.wav");
+  myPort = new Serial(this, Serial.list()[1], 9600);
+  myPort.bufferUntil('\n');
+
+  gears = loadImage("test gear.png");
+  hill = loadImage("hill.png");
+  easy = loadImage("easydoesit.png");
+  newrider = loadImage("newrider.png");
+  done = loadImage("done2.png");
+
+
+  font = createFont("Sturkopf.ttf", 200);
+  textFont(font);
+  fill(0);
+  //myMovie.loop();
+}
+
+int state = 0;
+void draw() {
+
+  if (state == 0) {
+    String starttext = "Could you drive a cable car?  GRAB and PULL handles to begin";
+    background(255);
+    textSize(150);
+    textAlign(CENTER);
+    fill(0);
+    text(starttext, 120, 120, 1200, 700);
+
+    if (((accel1 > 340) || (accel2 > 340)) && (accel2 > 50)) {
+      state = 1;
+      ring.play();
+           startTime = millis();
+
+    }
+  }
+
+  //if (state == 1) {
+
+  //  String textnext = "Alright let's roll. Try to put the handles in the target gear";
+  //  background(37, 103, 41);
+  //  fill(255, 255, 255);
+  //  text(textnext, 120, 120, 1200, 800);
+
+  //  if (flex > 60) {
+  //    state = 2;
+  //    
+  //  }
+  //}
+
+
+  if (state == 1) {
+
+  
+  image(myMovie, 0, 0, width, height);
+    myMovie.play();
+    myMovie.loop();
+
+  // gearbox graphics
+      fill(255, 255, 255);
+      noStroke();
+      rect(1130, 350, 240, 450 );
+      textAlign(CENTER);
+      String gearlabel = "Gearbox";
+      stroke(0);
+      textSize(100);
+      fill(0);
+      text( gearlabel, 745, 350, 1000, 1000);
+
+      // targets  
+      stroke(37, 103, 41);
+      strokeWeight(6);
+      noFill();
+      ellipse(1320, 575, 85, 85);
+      stroke(240, 60, 10);
+      ellipse(1180, 675, 85, 85);
+
+      // handle reads
+      float green = map(accel1, 0, 1023, 0, 10);
+      float red = map(accel2, 0, 500, 0, 3);
+      
+      noStroke();
+      fill(37, 103, 41);
+      ellipse( 1320, -1100 + green * 500, 75, 75);
+      fill(240, 60, 10);
+      ellipse( 1180,  1650 - red * 500, 75, 75);
+      image(gears, 1121, 400);
+      gears.resize(0, 500);
+
+      // gear labels
+      stroke(0);
+      fill(0);
+      String numr = "1L 2L 3L 4L";
+      String numl = "1 2 3 4";
+      textSize(50);
+      textAlign(LEFT);
+      text(numr, 1170, 490, 50, 1000);
+      text(numl, 1310, 490, 30, 1000);
+
+
+
+    int elapsed = millis() - startTime;
+    if (elapsed > 9000) {
+
+      
+      
+      // gearbox graphics
+      fill(255, 255, 255);
+      noStroke();
+      rect(1130, 350, 240, 450 );
+      textAlign(CENTER);
+      //String gearlabel = "Gearbox";
+      stroke(0);
+      textSize(100);
+      fill(0);
+      text( gearlabel, 745, 350, 1000, 1000);
+
+      // targets 
+      //noStroke();
+      noFill();
+      stroke(37, 103, 41);
+      strokeWeight(6);
+      ellipse(1320, 590, 85, 85);
+      stroke(240, 60, 10);
+      ellipse(1180, 575, 85, 85);
+
+      // handle reads
+      //float pull = map(flex, 0, 100, 0, 10);
+      //float push = map(flex2, 0, 100, 0, 10);
+      
+      noStroke();
+      fill(37, 103, 41);
+      ellipse( 1320, -1100 + green * 500, 75, 75);
+      fill(240, 60, 10);
+      ellipse( 1180, 1650 - red * 500, 75, 75);
+      image(gears, 1121, 400);
+      gears.resize(0, 500);
+
+      // gear labels
+      stroke(0);
+      fill(0);
+      //String numr = "1R 2R 3R 4R";
+      //String numl = "1 2 3 4";
+      textSize(50);
+      textAlign(LEFT);
+      text(numr, 1170, 490, 50, 1000);
+      text(numl, 1310, 490, 30, 1000);
+    }
+
+
+  
+
+    if (elapsed > 18000) {
+      
+      
+      
+           // gearbox graphics
+      fill(255, 255, 255);
+      noStroke();
+      rect(1130, 350, 240, 450 );
+      textAlign(CENTER);
+      //String gearlabel = "Gearbox";
+      stroke(0);
+      textSize(100);
+      fill(0);
+      text( gearlabel, 745, 350, 1000, 1000);
+
+      // targets 
+      
+      noFill();
+      stroke(37, 103, 41);
+      strokeWeight(6);
+      ellipse(1320, 525, 85, 85);
+      stroke(240, 60, 10);
+      ellipse(1180, 600, 85, 85);
+
+      // handle reads
+      //float pull = map(flex, 0, 100, 0, 10);
+      //float push = map(flex2, 0, 100, 0, 10);
+      
+      noStroke();
+      fill(37, 103, 41);
+      ellipse( 1320, -1100 + green * 500, 75, 75);
+      fill(240, 60, 10);
+      ellipse( 1180, 1650 - red * 500, 75, 75);
+      image(gears, 1121, 400);
+      gears.resize(0, 500);
+
+      // gear labels
+      stroke(0);
+      fill(0);
+      //String numr = "1R 2R 3R 4R";
+      //String numl = "1 2 3 4";
+      textSize(50);
+      textAlign(LEFT);
+      text(numr, 1170, 490, 50, 1000);
+      text(numl, 1310, 490, 30, 1000);
+      
+    }
+   
+    if (elapsed > 22000) {
+       background(255, 255, 255);
+    myMovie.pause();
+    done.resize(1440, 0);
+    image(done, -1, -1);
+     
+    }
+
+   // if ( pressure <5) {
+     // state = 3;
+    //}
+    
+  
+if (elapsed > 29000) {
+      state = 0;
+     
+    }
+  
+  }}
+
+
+
+
+// Called every time a new frame is available to read
+void movieEvent(Movie m) {
+  m.read();
+}
+
+
+void serialEvent(Serial myPort) {
+  String myString = myPort.readStringUntil('\n');
+  myString = trim(myString);
+  int sensors[] = int(split(myString, ','));
+  //println();
+
+  if (sensors.length > 2) {
+    accel2 = sensors[0];
+    accel1 = sensors[1];
+    
+   // accel1 = map(sensors[0], 0, 1023, 0, 100);
+    // accel2 = map(sensors[1], 0, 1023, 0, 100);
+    //flex = map(sensors[2], 0, 1023, 0, 100);
+    
+    for (int sensorNum = 0; sensorNum < sensors.length; sensorNum++) {
+    print("accel1" + ": " + accel1 + "\t" + "accel2"+ ": " + accel2 + "\t");
+    }
+  }
+}
